@@ -16,9 +16,18 @@ namespace Lesson_7___Keyboard_and_Mouse_Events
         Texture2D pacLeftTexture;
         Texture2D pacRightTexture;
         Texture2D pacSleepTexture;
-        Texture2D pacTexture; // This stores the player texture to be used in the Draw() method
+        Texture2D pacTexture;
 
         Rectangle pacLocation;
+
+        Texture2D pacUpDoubleTexture;
+        Texture2D pacDownDoubleTexture;
+        Texture2D pacLeftDoubleTexture;
+        Texture2D pacRightDoubleTexture;
+        Texture2D pacSleepDoubleTexture;
+        Texture2D pacDoubleTexture;
+
+        Rectangle pacDoubleLocation;
 
 
         public Game1()
@@ -31,7 +40,9 @@ namespace Lesson_7___Keyboard_and_Mouse_Events
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            pacLocation = new Rectangle(10, 10, 75, 75);
+            pacLocation = new Rectangle(450, 155, 75, 75);
+
+            pacDoubleLocation = new Rectangle(300, 155, 75, 75);
 
             base.Initialize();
         }
@@ -47,6 +58,13 @@ namespace Lesson_7___Keyboard_and_Mouse_Events
             pacRightTexture = Content.Load<Texture2D>("PacRight");
             pacSleepTexture = Content.Load<Texture2D>("PacSleep");
             pacTexture = pacSleepTexture;
+
+            pacDownDoubleTexture = Content.Load<Texture2D>("PacDown");
+            pacUpDoubleTexture = Content.Load<Texture2D>("PacUp");
+            pacLeftDoubleTexture = Content.Load<Texture2D>("PacLeft");
+            pacRightDoubleTexture = Content.Load<Texture2D>("PacRight");
+            pacSleepDoubleTexture = Content.Load<Texture2D>("PacSleep");
+            pacDoubleTexture = pacSleepTexture;
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,28 +77,94 @@ namespace Lesson_7___Keyboard_and_Mouse_Events
             if (keyboardState.IsKeyDown(Keys.Up))
             {
                 pacTexture = pacUpTexture;
-                pacLocation.Y -= 2;
+                pacLocation.Y -= 5;
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {
                 pacTexture = pacDownTexture;
-                pacLocation.Y += 2;
+                pacLocation.Y += 5;
             }
             if (keyboardState.IsKeyDown(Keys.Left))
             {
                 pacTexture = pacLeftTexture;
-                pacLocation.X -= 2;
+                pacLocation.X -= 5;
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {
                 pacTexture = pacRightTexture;
-                pacLocation.X += 2;
+                pacLocation.X += 5;
             }
-            // If pacman is not moving make him sleep
             if (!keyboardState.IsKeyDown(Keys.Up) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Down))
             {
                 pacTexture = pacSleepTexture;
             }
+
+            if(pacLocation.Left < 0)
+            {
+                pacLocation.X = 0;
+            }
+            if (pacLocation.Top < 0)
+            {
+                pacLocation.Y = 0;
+            }
+
+            if (pacLocation.Bottom >= _graphics.PreferredBackBufferHeight)
+            {
+                pacLocation.Y = _graphics.PreferredBackBufferHeight - 75;
+            }
+
+            if (pacLocation.Right >= _graphics.PreferredBackBufferWidth)
+            {
+                pacLocation.X = _graphics.PreferredBackBufferWidth - 75;
+            }
+
+
+
+
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                pacDoubleTexture = pacUpDoubleTexture;
+                pacDoubleLocation.Y -= 5;
+            }
+            if (keyboardState.IsKeyDown(Keys.S))
+            {
+                pacDoubleTexture = pacDownDoubleTexture;
+                pacDoubleLocation.Y += 5;
+            }
+            if (keyboardState.IsKeyDown(Keys.A))
+            {
+                pacDoubleTexture = pacLeftDoubleTexture;
+                pacDoubleLocation.X -= 5;
+            }
+            if (keyboardState.IsKeyDown(Keys.D))
+            {
+                pacDoubleTexture = pacRightDoubleTexture;
+                pacDoubleLocation.X += 5;
+            }
+            if (!keyboardState.IsKeyDown(Keys.W) && !keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.S) && !keyboardState.IsKeyDown(Keys.D))
+            {
+                pacDoubleTexture = pacSleepDoubleTexture;
+            }
+
+            if (pacDoubleLocation.Left < 0)
+            {
+                pacDoubleLocation.X = 0;
+            }
+            if (pacDoubleLocation.Top < 0)
+            {
+                pacDoubleLocation.Y = 0;
+            }
+
+            if (pacDoubleLocation.Bottom >= _graphics.PreferredBackBufferHeight)
+            {
+                pacDoubleLocation.Y = _graphics.PreferredBackBufferHeight - 75;
+            }
+
+            if (pacDoubleLocation.Right >= _graphics.PreferredBackBufferWidth)
+            {
+                pacDoubleLocation.X = _graphics.PreferredBackBufferWidth - 75;
+            }
+
 
             // TODO: Add your update logic here
 
@@ -94,9 +178,10 @@ namespace Lesson_7___Keyboard_and_Mouse_Events
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            // Draw Pacman
-
             _spriteBatch.Draw(pacTexture, pacLocation, Color.White);
+
+            _spriteBatch.Draw(pacDoubleTexture, pacDoubleLocation, Color.White);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
